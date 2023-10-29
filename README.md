@@ -17,4 +17,4 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Live Demo
-Live demo of the application can be found here.
+Live demo of the application can be found [here](https://contacts-aseeva.vercel.app/).

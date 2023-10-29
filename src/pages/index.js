@@ -69,15 +69,15 @@ export default function Home() {
 
       }
     })
-  }, [curPage, searchStr]);
+  }, []);
 
   const onNextPage = () => {
     console.log('next page')
-    if(searchResult.length <=1 )return;
+    if(searchResult.length < limit )return;
     return setCurPage((prevPage) => prevPage + 1);
   }
 
-  const onPrevPage = (curPage) => {
+  const onPrevPage = () => {
     if (curPage <= 1) return;
     console.log('prev page')
     return setCurPage((prevPage) => prevPage - 1);
@@ -86,49 +86,52 @@ export default function Home() {
   return (
     // <main className={` h-screen p-12 ${inter.className}`}>
     <MainLayout>
-      <div className='sticky-header bg-sky-900 relative sticky inset-x-0 top-0 w-full p-6 text-white'>
-        <button type='button'
-          onClick={() => {
-            router.push('/create')
+      <div className="sticky-header sticky w-full inset-x-0 top-0">
+        <div className='bg-sky-900 relative  p-6 text-white'>
+          <button type='button'
+            onClick={() => {
+              router.push('/create')
 
-          }}
-          className="absolute top-0 right-0 pr-10 pt-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-          </svg>
-        </button>
-        <h1 className='text-3xl bold mb-4 '>Contacts</h1>
-        <SearchInput onChange={(res) => setSearchStr(res)} value={searchStr} />
-        <h3 className='text-xl bold mb-4 '>Recent Calls</h3>
-        <div className="overflow-x-auto w-full">
-          <div className='flex flex-row gap-4 pb-6'>
-            {
-              isRecentLoading && <Loading />
-            }
-            {
-              errorRecents && <p>{errorRecents}</p>
-            }
-            { !isRecentLoading && !errorRecents &&
-              recentCalls
-                .sort((a, b) => b.createdAt - a.createdAt)
-                .slice(0, 10)
-                .map((call) => <RecentCallCard key={call.id} name={call.name} phone={call.phone} avatar={call.avatar} id={call.contact_id}></RecentCallCard>)
-            }
+            }}
+            className="absolute top-0 right-0 pr-10 pt-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+            </svg>
+          </button>
+          <h1 className='text-3xl bold mb-4 '>Contacts</h1>
+          <SearchInput onChange={(res) => setSearchStr(res)} value={searchStr} />
+          <h3 className='text-xl bold mb-4 '>Recent Calls</h3>
+          <div className="overflow-x-auto w-full">
+            <div className='flex flex-row gap-4 pb-6'>
+              {
+                isRecentLoading && <Loading />
+              }
+              {
+                errorRecents && <p>{errorRecents}</p>
+              }
+              { !isRecentLoading && !errorRecents &&
+                recentCalls
+                  .sort((a, b) => b.createdAt - a.createdAt)
+                  .slice(0, 10)
+                  .map((call) => <RecentCallCard key={call.id} name={call.name} phone={call.phone} avatar={call.avatar} id={call.contact_id}></RecentCallCard>)
+              }
+            </div>
+
           </div>
 
         </div>
+        <div className="flex flex-row justify-end w-full pr-12 pt-6 gap-4 bg-white">
+          <button onClick={onPrevPage} disabled={curPage<=1}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <button onClick={onNextPage}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
 
-      </div>
-      <div className="flex flex-row justify-end w-full pr-12 pt-6 gap-4 sticky inset-x-0 bottom-0 bg-white">
-        <button onClick={onPrevPage}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
-          </svg>
-        </button>
-        <button onClick={onNextPage}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
-          </svg>
-        </button>
       </div>
       <div className='w-full py-6 px-12'>
 
